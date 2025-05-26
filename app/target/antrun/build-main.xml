@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="maven-antrun-" default="main">
+  <target name="main">
+    <delete failonerror="false">
+      <fileset dir="dist/hello-twinape-app" />
+    </delete>
+    <copy todir="dist/hello-twinape-app">
+      <fileset dir="/home/rob/Work/TwinApe/git/hello-twinape/app/target">
+        <include name="hello-twinape-app-jar-with-dependencies.jar" />
+      </fileset>
+    </copy>
+    <echo file="dist/hello-twinape-app/banner.txt">hello-twinape-app</echo>
+    <echo file="dist/hello-twinape-app/version.txt" append="false">2.0.0-SNAPSHOT</echo>
+    <echo file="dist/hello-twinape-app/killall-hello-twinape-app.sh">#!/bin/bash
+kill -9 $(jps -mvl | grep 'hello-twinape-app-jar-with-dependencies.jar' | grep -v grep | awk '{print $1}') || true</echo>
+    <echo file="dist/hello-twinape-app/hello-twinape-app.vmoptions">--add-modules java.se 
+--add-exports java.base/jdk.internal.ref=ALL-UNNAMED 
+--add-exports java.base/sun.security.pkcs=ALL-UNNAMED
+--add-exports java.base/sun.security.util=ALL-UNNAMED
+--add-exports java.base/sun.security.x509=ALL-UNNAMED
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.base/java.nio=ALL-UNNAMED 
+--add-opens java.base/sun.nio.ch=ALL-UNNAMED 
+--add-opens java.management/sun.management=ALL-UNNAMED 
+--add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+#
+-Dfile.encoding=UTF-8
+-server
+#
+# force to use G1GC
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=100
+#
+# heap dump
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath="logs/heap-dump.hprof"
+#
+# log4j config to use disruptor
+-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+-DAsyncLoggerConfig.RingBufferSize=1024*1024
+-Dlog4j.configurationFile=config/log4j2.xml
+#
+# sentry environment
+-Dsentry.environment=$ENV_NAME
+-Dsentry.dsn=$SENTRY_DSN
+#
+# tls config
+-Dhttps.protocols=TLSv1.1,TLSv1.2,TLSv1.3
+-Djdk.tls.client.protocols=TLSv1.1,TLSv1.2,TLSv1.3
+#
+# additional options which configured from pom's properties gone here
+-XX:MaxRAMPercentage=80.0
+#</echo>
+    <echo file="dist/hello-twinape-app/start-hello-twinape-app.sh">#!/bin/bash
+cat banner.txt
+SELF_ABSOLUTE_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" &amp;&amp; pwd)/$(basename "${BASH_SOURCE[0]}")"
+WORKING_DIR=$(dirname $SELF_ABSOLUTE_PATH)
+
+read_vmoptions() {
+  vmoptions_file=`eval echo "$1" 2>/dev/null`
+  if [ ! -r "$vmoptions_file" ]; then
+    vmoptions_file="$prg_dir/$vmoptions_file"
+  fi
+  if [ -r "$vmoptions_file" ] &amp;&amp; [ -f "$vmoptions_file" ]; then
+    exec 8&lt; "$vmoptions_file"
+    while read cur_option&lt;&amp;8; do
+      is_comment=`expr "W$cur_option" : 'W *#.*'`
+      if [ "$is_comment" = "0" ]; then 
+        echo $(eval echo $cur_option)
+        vmo_include=`expr "W$cur_option" : 'W *-include-options \(.*\)'`
+        if [ "$vmo_include" = "" ]; then
+          JVM_OPTS="$JVM_OPTS $(eval echo $cur_option)"
+        fi
+      fi
+    done
+    exec 8&lt;&amp;-
+    if [ ! "$vmo_include" = "" ]; then
+      read_vmoptions "$vmo_include"
+    fi
+  fi
+}
+
+JVM_OPTS=""
+read_vmoptions $WORKING_DIR/hello-twinape-app.vmoptions
+
+mkdir -p logs
+java $JVM_OPTS -DworkingDir=$WORKING_DIR -jar hello-twinape-app-jar-with-dependencies.jar $@</echo>
+    <copy file="dist/hello-twinape-app/start-hello-twinape-app.sh" tofile="dist/hello-twinape-app/start-hello-twinape-app-background.sh" />
+    <echo file="dist/hello-twinape-app/start-hello-twinape-app-background.sh" append="true">> /dev/null 2>&amp;1 &amp;</echo>
+  </target>
+</project>

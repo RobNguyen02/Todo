@@ -1,0 +1,38 @@
+--add-modules java.se 
+--add-exports java.base/jdk.internal.ref=ALL-UNNAMED 
+--add-exports java.base/sun.security.pkcs=ALL-UNNAMED
+--add-exports java.base/sun.security.util=ALL-UNNAMED
+--add-exports java.base/sun.security.x509=ALL-UNNAMED
+--add-opens java.base/java.lang=ALL-UNNAMED
+--add-opens java.base/java.nio=ALL-UNNAMED 
+--add-opens java.base/sun.nio.ch=ALL-UNNAMED 
+--add-opens java.management/sun.management=ALL-UNNAMED 
+--add-opens jdk.management/com.sun.management.internal=ALL-UNNAMED
+#
+-Dfile.encoding=UTF-8
+-server
+#
+# force to use G1GC
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=100
+#
+# heap dump
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:HeapDumpPath="logs/heap-dump.hprof"
+#
+# log4j config to use disruptor
+-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
+-DAsyncLoggerConfig.RingBufferSize=1024*1024
+-Dlog4j.configurationFile=config/log4j2.xml
+#
+# sentry environment
+-Dsentry.environment=$ENV_NAME
+-Dsentry.dsn=$SENTRY_DSN
+#
+# tls config
+-Dhttps.protocols=TLSv1.1,TLSv1.2,TLSv1.3
+-Djdk.tls.client.protocols=TLSv1.1,TLSv1.2,TLSv1.3
+#
+# additional options which configured from pom's properties gone here
+-XX:MaxRAMPercentage=80.0
+#
