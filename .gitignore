@@ -1,0 +1,15 @@
+# Maven
+target/
+*.log
+*.tmp
+*.lock
+*.lastUpdated
+dependency-reduced-pom.xml
+release.properties
+
+# IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
