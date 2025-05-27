@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
 
-
-
 @Singleton
 @RegisterIApi(method = "http.post", endpoint = "todo/create", tag = "public")
 final class CreateTodoApi implements IApi<IRequest> {
@@ -47,7 +45,7 @@ final class CreateTodoApi implements IApi<IRequest> {
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var create = request.getBodyAs(CreateTodoRequest.class);
-        var title =  create.title;
+        var title = create.title;
         var description = create.descr;
         var isComplete = create.is_complete;
         return todoRepo.createtodo(title, description, isComplete)

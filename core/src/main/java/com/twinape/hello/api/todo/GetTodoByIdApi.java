@@ -10,6 +10,7 @@ import com.twinape.hello.repo.Todo.TodoRepo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
+
 import java.util.concurrent.CompletionStage;
 
 @Singleton
@@ -35,6 +36,7 @@ final class GetTodoByIdApi implements IApi<IRequest> {
         Integer id;
 
     }
+
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var getbyid = request.getBodyAs(GetTodoByIdRequest.class);

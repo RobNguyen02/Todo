@@ -10,6 +10,7 @@ import com.twinape.hello.repo.Todo.TodoRepo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
+
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
@@ -35,7 +36,7 @@ final class DeleteTodoApi implements IApi<IRequest> {
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
     private static final class DeleteTodoRequest {
         @NonNull
-       Integer id;
+        Integer id;
     }
 
     @Override

@@ -37,18 +37,21 @@ final class GetTimeWtdApi implements IApi<IRequest> {
         @NonNull
         LocalDateTime starttime;
         LocalDateTime endtime;
-
+        Integer limit;
+        Integer offset;
         @Nullable
         Integer idtodo;
 
-
     }
+
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var gettimewtd = request.getBodyAs(GetTimeWtdRequest.class);
         var starttime = gettimewtd.starttime;
         var endtime = gettimewtd.endtime;
         var idtodo = gettimewtd.idtodo;
-        return whattodorepo.gettimeWhattodo(starttime, endtime, idtodo);
+        var limit = gettimewtd.limit;
+        var offset = gettimewtd.offset;
+        return whattodorepo.gettimeWhattodo(starttime, endtime, idtodo, limit, offset);
     }
 }

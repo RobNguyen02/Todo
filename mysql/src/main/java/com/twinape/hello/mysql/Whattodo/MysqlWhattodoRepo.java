@@ -11,7 +11,6 @@ import com.twinape.hello.repo.Whattodo.WhattodoRepo;
 import com.twinape.hello.repo.Whattodo.WhattodoDetail;
 import lombok.AllArgsConstructor;
 
-import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
                 SELECT ? ,? ,? , t.id
                 FROM todo t
                 WHERE t.id = ?;
-                """).withArgs(content,starttime,endtime,idtodo);
+                """).withArgs(content, starttime, endtime, idtodo);
 
         return getMysqlClient().executeThenGet(query)
                 .thenApply(MultiRows::getRows) //
@@ -43,11 +42,10 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
                 UPDATE whattodo
                 SET content = ?, starttime = ?, endtime = ?
                 WHERE id = ?
-                """).withArgs(content, starttime,endtime,id);
+                """).withArgs(content, starttime, endtime, id);
 
         return getMysqlClient().executeThenClose(query);
     }
-
 
 
     @Override
@@ -61,13 +59,14 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
 
 
     @Override
-    public CompletionStage<List<Whattodo>> getWhattodo(int idtodo) {
+    public CompletionStage<List<Whattodo>> getWhattodo(int idtodo, int limit, int offset) {
         var query = SqlQuery.of("""
                 SELECT id, idtodo, content, starttime, endtime
                 FROM whattodo
                 WHERE idtodo = ?
                 ORDER BY starttime ASC
-                """).withArg(idtodo);
+                LIMIT ? OFFSET ?
+                """).withArgs(idtodo, limit, offset);
 
         return getMysqlClient().executeThenGet(query)
                 .thenApply(rows -> {
@@ -79,6 +78,8 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
                 });
     }
 
+
+    //change fogein key to other
     @Override
     public CompletionStage<Void> transformWhattodo(int id, int idtodo) {
         var query = SqlQuery.of("""
@@ -90,8 +91,9 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
         return getMysqlClient().executeThenClose(query);
     }
 
+
     @Override
-    public CompletionStage<List<WhattodoDetail>> detailWhattodo() {
+    public CompletionStage<List<WhattodoDetail>> detailWhattodo(int limit, int offset) {
         var query = SqlQuery.of("""
                 SELECT
                 w.id,
@@ -100,36 +102,36 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
                 w.endtime,
                 t.title AS t_title,
                 t.is_complete AS t_is_complete
-                FROM
-                whattodo w
-                JOIN
-                todo t on w.idtodo = t.id
+                FROM whattodo w
+                JOIN todo t on w.idtodo = t.id
                 ORDER BY w.starttime DESC
-                """);
+                LIMIT ? OFFSET ?
+                """).withArgs(limit,offset);
         return getMysqlClient().executeThenGet(query)
                 .thenApply(rows -> rows.mapTo(WhattodoDetail.class));
     }
 
+
     @Override
-    public CompletionStage<List<Whattodo>> gettimeWhattodo(LocalDateTime starttime, LocalDateTime endtime, Integer idtodo) {
+    public CompletionStage<List<Whattodo>> gettimeWhattodo(LocalDateTime starttime, LocalDateTime endtime, Integer idtodo, int limit, int offset) {
         StringBuilder sql = new StringBuilder("""
-        SELECT id, content, starttime, endtime, idtodo
-        FROM whattodo
-        WHERE starttime >= ? AND endtime <= ?
-    """);
+                SELECT id, content, starttime, endtime, idtodo
+                FROM whattodo
+                WHERE
+                   starttime >= ?
+                   AND endtime <= ?
+                """);
 
         List<Object> args = new ArrayList<>();
         args.add(starttime);
         args.add(endtime);
-
-        // Thêm điều kiện idtodo nếu có
         if (idtodo != null) {
             sql.append(" AND idtodo = ?");
             args.add(idtodo);
         }
-
-        sql.append(" ORDER BY starttime ASC LIMIT 10 OFFSET 0");
-
+        sql.append(" ORDER BY starttime ASC LIMIT ? OFFSET ?");
+        args.add(limit);
+        args.add(offset);
         var query = SqlQuery.of(sql.toString()).withArgs(args.toArray());
 
         return getMysqlClient().executeThenGet(query)

@@ -1,11 +1,12 @@
 package com.twinape.hello.repo.Todo;
+
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 public interface TodoRepo {
-    CompletionStage<Long> createtodo( String title, String descr, boolean is_complete);
+    CompletionStage<Long> createtodo(String title, String descr, boolean is_complete);
 
-    CompletionStage<List<Todo>> getAllTodo();
+    CompletionStage<List<Todo>> getAllTodo(int limit, int offset);
 
     CompletionStage<Void> updateTodo(int id, String title, String descr, boolean is_complete);
 

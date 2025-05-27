@@ -22,22 +22,26 @@ public final class MysqlTodoRepo extends AbstractMysqlRepo implements TodoRepo {
     @Override
     public CompletionStage<Long> createtodo(String title, String descr, boolean is_complete) {
         var query = SqlQuery.of("""
-            INSERT INTO todo (title, descr, is_complete)
-            VALUES (?, ?, ?)
-        """).withArgs(title, descr, is_complete);
+                INSERT INTO todo (title, descr, is_complete)
+                VALUES (?, ?, ?)
+                """).withArgs(title, descr, is_complete);
         return getMysqlClient().executeThenGet(query) //
                 .thenApply(MultiRows::getRows) //
                 .thenApply(row -> row.property(LAST_INSERTED_ID));
     }
 
     @Override
-    public CompletionStage<List<Todo>> getAllTodo() {
-        var query = SqlQuery.of("SELECT * FROM todo");
+    public CompletionStage<List<Todo>> getAllTodo(int limit, int offset) {
+        var query = SqlQuery.of("""
+                SELECT id, title, descr, is_complete 
+                FROM todo 
+                LIMIT ? OFFSET ?
+                """).withArgs(limit, offset);
         return getMysqlClient().executeThenGet(query)
                 .thenApply(rows -> {
                     List<Todo> todos = rows.mapTo(Todo.class);
                     if (todos.isEmpty()) {
-                        throw new NotFoundException("No todos found");
+                        throw new NotFoundException("No todo found");
                     }
                     return todos;
                 });
@@ -45,31 +49,29 @@ public final class MysqlTodoRepo extends AbstractMysqlRepo implements TodoRepo {
 
     @Override
     public CompletionStage<Todo> getTodo(int id) {
-        var query = SqlQuery.of("SELECT id, title, descr, is_complete FROM todo WHERE id = ?")
-                .withArg(id);
+        var query = SqlQuery.of("""
+                SELECT id, title, descr, is_complete
+                FROM todo
+                WHERE id = ?
+                """).withArg(id);
 
         return getMysqlClient().executeThenGetFirst(query)
                 .thenCompose(row -> {
-                    try {
-                        Todo todo = row.mapTo(Todo.class);
-                        if (todo == null) {
-                            return CompletableFuture.failedStage(new NotFoundException("Todo not found"));
-                        }
-                        return CompletableFuture.completedStage(todo);
-                    } catch (Exception ex) {
+                    Todo todo = row.mapTo(Todo.class);
+                    if (todo == null) {
                         return CompletableFuture.failedStage(new NotFoundException("Todo not found"));
                     }
+                    return CompletableFuture.completedStage(todo);
                 });
     }
 
     @Override
     public CompletionStage<Void> checkdoneTodo(int id) {
         var query = SqlQuery.of("""
-        UPDATE todo
-        SET is_complete = true
-        WHERE id = ?
-        """).withArgs(id);
-
+                UPDATE todo
+                SET is_complete = true
+                WHERE id = ?
+                """).withArg(id);
         return getMysqlClient().executeThenClose(query);
     }
 
@@ -77,19 +79,21 @@ public final class MysqlTodoRepo extends AbstractMysqlRepo implements TodoRepo {
     @Override
     public CompletionStage<Void> updateTodo(int id, String title, String descr, boolean is_complete) {
         var query = SqlQuery.of("""
-        UPDATE todo
-        SET title = ?, descr = ?, is_complete = ?
-        WHERE id = ?
-    """).withArgs(title, descr, is_complete, id);
+                UPDATE todo
+                SET title = ?, descr = ?, is_complete = ?
+                WHERE id = ?
+                """).withArgs(title, descr, is_complete, id);
 
         return getMysqlClient().executeThenClose(query);
     }
 
-
     @Override
     public CompletionStage<Void> deleteTodo(int id) {
-        var query = SqlQuery.of("DELETE FROM todo WHERE id = ?")
-                .withArgs(id);
+        var query = SqlQuery.of("""
+                DELETE FROM todo
+                WHERE id = ?
+                """)
+                .withArg(id);
 
         return getMysqlClient().executeThenClose(query);
     }

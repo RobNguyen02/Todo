@@ -10,6 +10,7 @@ import com.twinape.hello.repo.Whattodo.WhattodoRepo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -50,7 +51,7 @@ final class AddWtdApi implements IApi<IRequest> {
     public CompletionStage<?> handle(IRequest request) throws Exception {
 
         var create = request.getBodyAs(CreateWtdRequest.class);
-        var content =  create.content;
+        var content = create.content;
         var startTime = create.starttime;
         var endTime = create.endtime;
         var idtodo = create.idtodo;

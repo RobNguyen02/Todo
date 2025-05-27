@@ -11,6 +11,7 @@ import com.twinape.hello.repo.Whattodo.WhattodoRepo;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
+
 import java.util.concurrent.CompletionStage;
 
 @Singleton
@@ -34,12 +35,17 @@ final class GetWtdApi implements IApi<IRequest> {
     private static final class GetWhattodoRequest {
         @NonNull
         Integer idtodo;
+        Integer limit;
+        Integer offset;
 
     }
+
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var getwtd = request.getBodyAs(GetWhattodoRequest.class);
         var idtodo = getwtd.idtodo;
-        return whattodorepo.getWhattodo(idtodo);
+        var limit = getwtd.limit;
+        var offset = getwtd.offset;
+        return whattodorepo.getWhattodo(idtodo,limit,offset);
     }
 }

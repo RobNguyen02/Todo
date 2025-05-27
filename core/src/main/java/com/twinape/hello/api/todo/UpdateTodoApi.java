@@ -46,7 +46,7 @@ final class UpdateTodoApi implements IApi<IRequest> {
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var create = request.getBodyAs(UpdateTodoRequest.class);
         var id = create.id;
-        var title =  create.title;
+        var title = create.title;
         var description = create.descr;
         var isComplete = create.is_complete;
 

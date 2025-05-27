@@ -53,10 +53,10 @@ final class UpdateWtdApi implements IApi<IRequest> {
         var update = request.getBodyAs(UpdateWtdRequest.class);
         var id = update.id;
         var content = update.content;
-        var starttime=  update.starttime;
+        var starttime = update.starttime;
         var endtime = update.endtime;
 
-        return whattodoRepo.updateWhattodo(id,content,starttime,endtime)
+        return whattodoRepo.updateWhattodo(id, content, starttime, endtime)
                 .thenApply(v -> Map.of("message", "Update todo with id: " + id));
 
     }
