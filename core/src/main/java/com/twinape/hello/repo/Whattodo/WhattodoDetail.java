@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Jacksonized
 @JsonIgnoreProperties(ignoreUnknown = true)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public final class Whattodo {
+public final class WhattodoDetail {
     int id;
 
     String content;
@@ -22,5 +22,8 @@ public final class Whattodo {
 
     LocalDateTime endtime;
 
-    int idtodo;
+    String t_title;
+
+    Boolean t_is_complete;
+
 }

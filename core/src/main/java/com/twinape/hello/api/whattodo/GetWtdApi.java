@@ -38,8 +38,8 @@ final class GetWtdApi implements IApi<IRequest> {
     }
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
-        var getbyid = request.getBodyAs(GetWhattodoRequest.class);
-        var idtodo = getbyid.idtodo;
+        var getwtd = request.getBodyAs(GetWhattodoRequest.class);
+        var idtodo = getwtd.idtodo;
         return whattodorepo.getWhattodo(idtodo);
     }
 }

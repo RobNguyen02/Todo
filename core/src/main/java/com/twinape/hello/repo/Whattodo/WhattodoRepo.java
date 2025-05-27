@@ -1,8 +1,9 @@
 package com.twinape.hello.repo.Whattodo;
 
-import java.time.LocalDate;
+import javax.annotation.Nullable;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
@@ -16,4 +17,9 @@ public interface WhattodoRepo {
     CompletionStage<List<Whattodo>> getWhattodo(int idtodo);
 
     CompletionStage<Void> transformWhattodo(int id, int idtodo);
+
+    CompletionStage<List<WhattodoDetail>> detailWhattodo();
+
+    CompletionStage<List<Whattodo>> gettimeWhattodo(LocalDateTime starttime, LocalDateTime endtime, @Nullable Integer idtodo);
+
 }

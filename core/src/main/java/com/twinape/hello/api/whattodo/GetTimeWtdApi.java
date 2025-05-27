@@ -11,21 +11,19 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
+import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.concurrent.CompletionStage;
 
-
 @Singleton
-@RegisterIApi(method = "http.put", endpoint = "todo/wtd/update", tag = "public")
-final class UpdateWtdApi implements IApi<IRequest> {
+@RegisterIApi(method = "http.get", endpoint = "todo/wtd/search/time", tag = "public")
+final class GetTimeWtdApi implements IApi<IRequest> {
 
-    private final WhattodoRepo whattodoRepo;
+    private final WhattodoRepo whattodorepo;
 
     @Inject
-    public UpdateWtdApi(WhattodoRepo whattodoRepo) {
-
-        this.whattodoRepo = whattodoRepo;
+    public GetTimeWtdApi(WhattodoRepo whattodorepo) {
+        this.whattodorepo = whattodorepo;
     }
 
     @Getter
@@ -35,29 +33,22 @@ final class UpdateWtdApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class UpdateWtdRequest {
+    private static final class GetTimeWtdRequest {
         @NonNull
-        Integer id;
-
-        String content;
-
         LocalDateTime starttime;
-
         LocalDateTime endtime;
 
+        @Nullable
         Integer idtodo;
-    }
 
+
+    }
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
-        var update = request.getBodyAs(UpdateWtdRequest.class);
-        var id = update.id;
-        var content = update.content;
-        var starttime=  update.starttime;
-        var endtime = update.endtime;
-
-        return whattodoRepo.updateWhattodo(id,content,starttime,endtime)
-                .thenApply(v -> Map.of("message", "Update todo with id: " + id));
-
+        var gettimewtd = request.getBodyAs(GetTimeWtdRequest.class);
+        var starttime = gettimewtd.starttime;
+        var endtime = gettimewtd.endtime;
+        var idtodo = gettimewtd.idtodo;
+        return whattodorepo.gettimeWhattodo(starttime, endtime, idtodo);
     }
 }

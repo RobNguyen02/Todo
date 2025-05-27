@@ -1,6 +1,6 @@
 package com.twinape.hello.api.whattodo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -12,7 +12,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalDateTime;
+
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
 

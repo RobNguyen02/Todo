@@ -44,7 +44,6 @@ public final class HelloTwinApeAppConfig implements CommonAppConfig {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        // Đồng bộ với DatabindCodec
         DatabindCodec.mapper().registerModule(new JavaTimeModule());
         DatabindCodec.mapper().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 

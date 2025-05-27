@@ -41,8 +41,8 @@ final class CheckDoneTodoApi implements IApi<IRequest> {
 
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
-        var create = request.getBodyAs(CheckDoneTodoRequest.class);
-        var id = create.id;
+        var checkdone = request.getBodyAs(CheckDoneTodoRequest.class);
+        var id = checkdone.id;
         return todoRepo.checkdoneTodo(id)
                 .thenApply(v -> Map.of("message", "Check done to do with id: " + id));
 

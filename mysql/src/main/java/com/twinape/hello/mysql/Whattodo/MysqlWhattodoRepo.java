@@ -8,8 +8,12 @@ import com.twinape.common.sql.extern.MultiRows;
 import com.twinape.hello.mysql.AbstractMysqlRepo;
 import com.twinape.hello.repo.Whattodo.Whattodo;
 import com.twinape.hello.repo.Whattodo.WhattodoRepo;
+import com.twinape.hello.repo.Whattodo.WhattodoDetail;
 import lombok.AllArgsConstructor;
+
+import javax.annotation.Nullable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 
@@ -59,9 +63,10 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
     @Override
     public CompletionStage<List<Whattodo>> getWhattodo(int idtodo) {
         var query = SqlQuery.of("""
-                SELECT idtodo, content, starttime, endtime
+                SELECT id, idtodo, content, starttime, endtime
                 FROM whattodo
                 WHERE idtodo = ?
+                ORDER BY starttime ASC
                 """).withArg(idtodo);
 
         return getMysqlClient().executeThenGet(query)
@@ -85,5 +90,50 @@ public class MysqlWhattodoRepo extends AbstractMysqlRepo implements WhattodoRepo
         return getMysqlClient().executeThenClose(query);
     }
 
+    @Override
+    public CompletionStage<List<WhattodoDetail>> detailWhattodo() {
+        var query = SqlQuery.of("""
+                SELECT
+                w.id,
+                w.content,
+                w.starttime,
+                w.endtime,
+                t.title AS t_title,
+                t.is_complete AS t_is_complete
+                FROM
+                whattodo w
+                JOIN
+                todo t on w.idtodo = t.id
+                ORDER BY w.starttime DESC
+                """);
+        return getMysqlClient().executeThenGet(query)
+                .thenApply(rows -> rows.mapTo(WhattodoDetail.class));
+    }
+
+    @Override
+    public CompletionStage<List<Whattodo>> gettimeWhattodo(LocalDateTime starttime, LocalDateTime endtime, Integer idtodo) {
+        StringBuilder sql = new StringBuilder("""
+        SELECT id, content, starttime, endtime, idtodo
+        FROM whattodo
+        WHERE starttime >= ? AND endtime <= ?
+    """);
+
+        List<Object> args = new ArrayList<>();
+        args.add(starttime);
+        args.add(endtime);
+
+        // Thêm điều kiện idtodo nếu có
+        if (idtodo != null) {
+            sql.append(" AND idtodo = ?");
+            args.add(idtodo);
+        }
+
+        sql.append(" ORDER BY starttime ASC LIMIT 10 OFFSET 0");
+
+        var query = SqlQuery.of(sql.toString()).withArgs(args.toArray());
+
+        return getMysqlClient().executeThenGet(query)
+                .thenApply(rows -> rows.mapTo(Whattodo.class));
+    }
 
 }
