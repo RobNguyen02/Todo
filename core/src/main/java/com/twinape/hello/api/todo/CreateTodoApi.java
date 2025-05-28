@@ -17,7 +17,7 @@ import java.util.concurrent.CompletionStage;
 
 @Singleton
 @RegisterIApi(method = "http.post", endpoint = "todo/create", tag = "public")
-final class CreateTodoApi implements IApi<IRequest> {
+public final class CreateTodoApi implements IApi<IRequest> {
 
     private final TodoRepo todoRepo;
 
@@ -35,7 +35,7 @@ final class CreateTodoApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class CreateTodoRequest {
+    public static final class CreateTodoRequest {
         @NonNull
         String title;
         String descr;

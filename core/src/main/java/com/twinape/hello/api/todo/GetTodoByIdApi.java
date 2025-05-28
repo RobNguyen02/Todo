@@ -15,12 +15,12 @@ import java.util.concurrent.CompletionStage;
 
 @Singleton
 @RegisterIApi(method = "http.get", endpoint = "todo/get/byid", tag = "public")
-final class GetTodoByIdApi implements IApi<IRequest> {
+public final class GetTodoByIdApi implements IApi<IRequest> {
 
     private final TodoRepo todoRepo;
 
     @Inject
-    GetTodoByIdApi(TodoRepo todoRepo) {
+    public GetTodoByIdApi(TodoRepo todoRepo) {
         this.todoRepo = todoRepo;
     }
 
@@ -31,7 +31,7 @@ final class GetTodoByIdApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class GetTodoByIdRequest {
+    public static final class GetTodoByIdRequest {
         @NonNull
         Integer id;
 

@@ -13,12 +13,13 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 
 @Singleton
 @RegisterIApi(method = "http.post", endpoint = "todo/wtd/add", tag = "public")
-final class AddWtdApi implements IApi<IRequest> {
+public final class AddWtdApi implements IApi<IRequest> {
 
     private final WhattodoRepo whattodoRepo;
 
@@ -36,7 +37,7 @@ final class AddWtdApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class CreateWtdRequest {
+    public static final class AddWtdRequest {
         @NonNull
         String content;
 
@@ -50,17 +51,17 @@ final class AddWtdApi implements IApi<IRequest> {
     @Override
     public CompletionStage<?> handle(IRequest request) throws Exception {
 
-        var create = request.getBodyAs(CreateWtdRequest.class);
-        var content = create.content;
-        var startTime = create.starttime;
-        var endTime = create.endtime;
-        var idtodo = create.idtodo;
-        if (create.starttime == null || create.endtime == null) {
-            throw new IllegalArgumentException("Start time and end time are required");
-        }
+        var add = request.getBodyAs(AddWtdRequest.class);
+        var content = add.content;
+        var startTime = add.starttime;
+        var endTime = add.endtime;
+        var idtodo = add.idtodo;
 
-        if (create.starttime.isAfter(create.endtime)) {
-            throw new IllegalArgumentException("End time must be after start time");
+        if (add.content == null || add.content.isBlank()) {
+            return CompletableFuture.completedFuture(Map.of("error", "Content is required"));
+        }
+        if (add.starttime.isAfter(add.endtime)) {
+            return CompletableFuture.completedFuture(Map.of("error","End time must be after start time"));
         }
 
         return whattodoRepo.addWhattodo(content, startTime, endTime, idtodo)

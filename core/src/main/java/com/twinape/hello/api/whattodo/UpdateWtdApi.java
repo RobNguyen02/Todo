@@ -13,12 +13,13 @@ import lombok.extern.jackson.Jacksonized;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 
 @Singleton
 @RegisterIApi(method = "http.put", endpoint = "todo/wtd/update", tag = "public")
-final class UpdateWtdApi implements IApi<IRequest> {
+public final class UpdateWtdApi implements IApi<IRequest> {
 
     private final WhattodoRepo whattodoRepo;
 
@@ -35,17 +36,16 @@ final class UpdateWtdApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class UpdateWtdRequest {
+    public static final class UpdateWtdRequest {
         @NonNull
         Integer id;
 
+        @NonNull
         String content;
 
         LocalDateTime starttime;
 
         LocalDateTime endtime;
-
-        Integer idtodo;
     }
 
     @Override
@@ -56,6 +56,9 @@ final class UpdateWtdApi implements IApi<IRequest> {
         var starttime = update.starttime;
         var endtime = update.endtime;
 
+        if (update.content == null || update.content.isBlank()) {
+            return CompletableFuture.completedFuture(Map.of("error", "content is required"));
+        }
         return whattodoRepo.updateWhattodo(id, content, starttime, endtime)
                 .thenApply(v -> Map.of("message", "Update todo with id: " + id));
 

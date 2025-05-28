@@ -1,7 +1,7 @@
 appName: hello-twinape
 
 hazelcast:
-  filePath: ${HZ_CONFIG_FILE | config/hazelcast-local.xml}
+  filePath: "/home/rob/Work/TwinApe/git/hello-twinape/app/config/hazelcast-local.xml"
 
 vertx:
   preferNativeTransport: ${VERTX_PREFER_NATIVE_TRANSPORT | false}

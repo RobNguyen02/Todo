@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
 
@@ -43,6 +44,9 @@ final class CheckDoneTodoApi implements IApi<IRequest> {
     public CompletionStage<?> handle(IRequest request) throws Exception {
         var checkdone = request.getBodyAs(CheckDoneTodoRequest.class);
         var id = checkdone.id;
+        if( checkdone.id == null) {
+            return CompletableFuture.completedFuture(Map.of("error", "id is required"));
+        }
         return todoRepo.checkdoneTodo(id)
                 .thenApply(v -> Map.of("message", "Check done to do with id: " + id));
 

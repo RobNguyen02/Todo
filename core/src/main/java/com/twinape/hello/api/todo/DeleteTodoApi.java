@@ -17,7 +17,7 @@ import java.util.concurrent.CompletionStage;
 
 @Singleton
 @RegisterIApi(method = "http.delete", endpoint = "todo/delete", tag = "public")
-final class DeleteTodoApi implements IApi<IRequest> {
+public final class DeleteTodoApi implements IApi<IRequest> {
 
     private final TodoRepo todoRepo;
 
@@ -34,7 +34,7 @@ final class DeleteTodoApi implements IApi<IRequest> {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-    private static final class DeleteTodoRequest {
+    public static final class DeleteTodoRequest {
         @NonNull
         Integer id;
     }
