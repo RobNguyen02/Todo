@@ -1,4 +1,4 @@
-package com.twinape.hello.app.test;
+package com.twinape.hello.app.boots;
 
 import com.google.inject.*;
 import com.google.inject.name.Named;

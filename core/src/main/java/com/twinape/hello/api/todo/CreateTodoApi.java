@@ -23,7 +23,6 @@ public final class CreateTodoApi implements IApi<IRequest> {
 
     @Inject
     public CreateTodoApi(TodoRepo todoRepo) {
-
         this.todoRepo = todoRepo;
     }
 

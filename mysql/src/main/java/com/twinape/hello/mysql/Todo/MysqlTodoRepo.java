@@ -33,8 +33,8 @@ public final class MysqlTodoRepo extends AbstractMysqlRepo implements TodoRepo {
     @Override
     public CompletionStage<List<Todo>> getAllTodo(int limit, int offset) {
         var query = SqlQuery.of("""
-                SELECT id, title, descr, is_complete 
-                FROM todo 
+                SELECT id, title, descr, is_complete
+                FROM todo
                 LIMIT ? OFFSET ?
                 """).withArgs(limit, offset);
         return getMysqlClient().executeThenGet(query)
@@ -97,4 +97,5 @@ public final class MysqlTodoRepo extends AbstractMysqlRepo implements TodoRepo {
 
         return getMysqlClient().executeThenClose(query);
     }
+
 }

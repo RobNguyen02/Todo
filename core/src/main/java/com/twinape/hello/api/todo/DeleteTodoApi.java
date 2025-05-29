@@ -23,7 +23,6 @@ public final class DeleteTodoApi implements IApi<IRequest> {
 
     @Inject
     public DeleteTodoApi(TodoRepo todoRepo) {
-
         this.todoRepo = todoRepo;
     }
 

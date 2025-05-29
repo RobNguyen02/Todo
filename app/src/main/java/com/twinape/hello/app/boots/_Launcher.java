@@ -1,4 +1,4 @@
-package com.twinape.hello.app.test;
+package com.twinape.hello.app.boots;
 
 import com.twinape.common.bootstrap.AppStarter;
 import com.twinape.hello.app.HelloTwinApeApp;

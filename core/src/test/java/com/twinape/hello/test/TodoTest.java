@@ -5,6 +5,7 @@ import com.twinape.hello.repo.Todo.Todo;
 import com.twinape.hello.repo.Todo.TodoRepo;
 import com.twinape.facade.IRequest;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -66,6 +67,10 @@ public class TodoTest {
 
 
     @Test
+    @DisplayName("""
+            
+            """)
+
     void testHandle_UpdateSuccessMessage() throws Exception {
         int id = 1;
         String title = "Test Title update";
@@ -232,5 +237,6 @@ public class TodoTest {
         //repo verify
         verify(todoRepo).getTodo(id);
     }
+
 
 }
