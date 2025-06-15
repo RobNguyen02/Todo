@@ -16,6 +16,6 @@
         <module>app</module>
         <module>mysql</module>
         <module>pgsql</module>
-        <module>Rsync</module>
+        <module>rsync</module>
     </modules>
 </project>

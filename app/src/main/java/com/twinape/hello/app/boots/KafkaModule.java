@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.twinape.hello.app.HelloTwinApeAppConfig;
+import com.twinape.hello.sender.RsyncEventSenderPort;
 import com.twinape.rsync.KafkaTodoRsyncProducer;
 import com.twinape.rsync.KafkaTodoRsyncProducerConfig;
 import com.twinape.rsync.TodoRsyncConsumer;
@@ -27,5 +28,7 @@ public final class KafkaModule extends AbstractModule {
     protected void configure() {
           bind(KafkaTodoRsyncProducer.class).in(Singleton.class);
           bind(TodoRsyncConsumer.class).asEagerSingleton();
+        bind(RsyncEventSenderPort.class).to(KafkaTodoRsyncProducer.class).in(Singleton.class);
+
     }
 }

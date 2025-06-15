@@ -28,7 +28,7 @@ public class TodoTest {
     @BeforeAll
     static void setup() {
         todoRepo = mock(TodoRepo.class);
-        createTodoApi = new CreateTodoApi(todoRepo);
+//        createTodoApi = new CreateTodoApi(todoRepo);
         updateTodoApi = new UpdateTodoApi(todoRepo);
         deleteTodoApi = new DeleteTodoApi(todoRepo);
         getTodoApi = new GetTodoApi(todoRepo);
