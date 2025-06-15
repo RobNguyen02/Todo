@@ -27,8 +27,6 @@ public class HelloTwinApeApp extends AutoStopLifeCycle {
                 .toCompletionStage()
                 .handle(Fulfilled::of)
                 .thenAccept(ff -> ff.forward(startFuture));
-
-
     }
 
 }

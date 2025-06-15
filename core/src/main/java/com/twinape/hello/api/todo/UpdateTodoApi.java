@@ -51,7 +51,9 @@ public final class UpdateTodoApi implements IApi<IRequest> {
         var isComplete = create.is_complete;
 
         return todoRepo.updateTodo(id, title, description, isComplete)
-                .thenApply(v -> Map.of("message", "Update todo with id: " + id));
+                .thenApply(v -> Map.of("status", 200,
+                        "message", "Update todo with id: " + id
+                ));
 
     }
 }

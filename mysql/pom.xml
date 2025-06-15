@@ -11,6 +11,9 @@
 
     <artifactId>hello-twinape-mysql</artifactId>
 
+    <properties>
+        <testcontainers.version>1.19.3</testcontainers.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.twinape</groupId>
@@ -24,6 +27,10 @@
         <dependency>
             <groupId>com.twinape</groupId>
             <artifactId>twa-commons-sql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.twinape</groupId>
+            <artifactId>twa-commons-pgpool</artifactId>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -59,5 +66,36 @@
             <version>8.3.0</version>
             <scope>test</scope>
         </dependency>
+
+
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.19.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mysql</artifactId>
+            <version>1.19.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-junit5</artifactId>
+            <version>${vertx.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>

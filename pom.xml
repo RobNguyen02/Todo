@@ -15,5 +15,7 @@
         <module>core</module>
         <module>app</module>
         <module>mysql</module>
+        <module>pgsql</module>
+        <module>Rsync</module>
     </modules>
 </project>
