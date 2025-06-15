@@ -49,12 +49,7 @@
             <groupId>com.twinape</groupId>
             <artifactId>twa-facade-http</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.twinape</groupId>
-            <artifactId>hello-twinape-mysql</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -71,6 +66,43 @@
             <version>1.69.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.twinape</groupId>
+            <artifactId>hello-twinape-pgsql</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.twinape</groupId>
+            <artifactId>hello-twinape-mysql</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>4.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.twinape</groupId>
+            <artifactId>hello-twinape-rsync</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.twinape</groupId>
+            <artifactId>twa-mood-social-rsync-client-core</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!--        <dependency>-->
+<!--            <groupId>com.twinape</groupId>-->
+<!--            <artifactId>hello-twinape-mysql</artifactId>-->
+<!--            <version>2.0.0-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
+
 
     </dependencies>
 </project>

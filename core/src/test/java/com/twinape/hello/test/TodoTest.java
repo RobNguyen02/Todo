@@ -46,24 +46,9 @@ public class TodoTest {
 
     //Fake data list
     List<Todo> faketodo = List.of(
-            Todo.builder()
-                    .id(1)
-                    .title("Fake title 1")
-                    .descr("Fake descr 1")
-                    .complete(false)
-                    .build(),
-            Todo.builder()
-                    .id(2)
-                    .title("Fake title 2")
-                    .descr("Fake descr 2")
-                    .complete(false)
-                    .build(),
-            Todo.builder()
-                    .id(3)
-                    .title("Fake title 3")
-                    .descr("Fake descr 3")
-                    .complete(false)
-                    .build());
+            Todo.builder().id(1).title("Fake title 1").descr("Fake descr 1").complete(false).build(),
+            Todo.builder().id(2).title("Fake title 2").descr("Fake descr 2").complete(false).build(),
+            Todo.builder().id(3).title("Fake title 3").descr("Fake descr 3").complete(false).build());
 
 
     @Test
@@ -100,8 +85,10 @@ public class TodoTest {
 
         // Assert
         assertTrue(result instanceof Map);
-        Map<?, ?> resultMap = (Map<?, ?>) result;
-        assertEquals("Update todo with id: " + id, resultMap.get("message"));
+//        Map<?, ?> resultMap = (Map<?, ?>) result;
+//        assertEquals("Update todo with id: " + id, resultMap.get("message"));
+        Map<String, Object> resultMap = (Map<String, Object>) result;
+        assertEquals(200, resultMap.get("status"));
 
         // Verify repo call
         verify(todoRepo).updateTodo(id, title, descr, isComplete);

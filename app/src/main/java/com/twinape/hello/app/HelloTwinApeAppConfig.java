@@ -12,6 +12,7 @@ import com.twinape.common.bootstrap.MetricsConfig;
 import com.twinape.common.bootstrap.VertxConfig;
 import com.twinape.common.uri.ParsedUri;
 import com.twinape.facade.http.config.HttpServerConfig;
+import com.twinape.rsync.KafkaTodoRsyncProducerConfig;
 import io.vertx.core.json.jackson.DatabindCodec;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -34,7 +35,11 @@ public final class HelloTwinApeAppConfig implements CommonAppConfig {
     private final VertxConfig vertx;
     private final MetricsConfig metrics;
     private final MySqlConfig mySql;
+    private final PgSqlConfig pgSql;
+    private final KafkaTodoRsyncProducerConfig kafka;
+
     private final HttpServerConfig publicHttp;
+
 
 
     @Provides
@@ -57,6 +62,16 @@ public final class HelloTwinApeAppConfig implements CommonAppConfig {
     @EqualsAndHashCode
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static final class MySqlConfig {
+        private final ParsedUri uri;
+    }
+
+    @Getter
+    @Builder
+    @ToString
+    @Jacksonized
+    @EqualsAndHashCode
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class PgSqlConfig {
         private final ParsedUri uri;
     }
 }

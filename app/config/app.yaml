@@ -32,5 +32,11 @@ publicHttp:
   cors:
     allowAll: ${PUBLIC_HTTP_CORS_ALLOW_ALL | true}
 
-mySql:
-  uri: mysql-steady://blena_cloud:12345678@localhost:3306/daily
+#mySql:
+#  uri: mysql-steady://postgres:12345678@localhost:5432/daily
+
+pgSql:
+  uri: postgres-steady://postgres:12345678@localhost:5432/daily
+
+kafka:
+  bootstrapServers: localhost:9092

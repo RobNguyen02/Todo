@@ -18,6 +18,7 @@ import java.util.concurrent.CompletionStage;
 @Singleton
 @RegisterIApi(method = "http.post", endpoint = "todo/create", tag = "public")
 public final class CreateTodoApi implements IApi<IRequest> {
+    private final KafkaTodoRsyncProducer kafkaProducer;
 
     private final TodoRepo todoRepo;
 

@@ -18,13 +18,6 @@ import io.vertx.core.Vertx;
 
 final class ApiModule extends AbstractModule {
 
-    @Provides
-    @Singleton
-    MySqlClient mysqlClient(HelloTwinApeAppConfig appConfig, Vertx vertx) {
-        var mysqlUri = appConfig.getMySql().getUri();
-        var connSupplier = MySqlConnectionSupplier.from(mysqlUri, vertx);
-        return new MySqlClient(connSupplier);
-    }
 
     @Provides
     @Singleton
@@ -55,9 +48,4 @@ final class ApiModule extends AbstractModule {
                 .build();
     }
 //
-    @Override
-    public void configure() {
-        bind(TodoRepo.class).to(MysqlTodoRepo.class).in(Singleton.class);
-        bind(WhattodoRepo.class).to(MysqlWhattodoRepo.class).in(Singleton.class);
-    }
 }

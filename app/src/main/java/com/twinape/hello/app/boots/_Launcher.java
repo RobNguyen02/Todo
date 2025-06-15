@@ -14,6 +14,9 @@ final class _Launcher {
                 .configType(HelloTwinApeAppConfig.class) //
                 .configPath(configFile) //
                 .module(ApiModule.class) //
+//                .module(MysqlModule.class) //
+                .module(PosgreModule.class) //
+                .module(KafkaModule.class)
                 .start();
 
     }
