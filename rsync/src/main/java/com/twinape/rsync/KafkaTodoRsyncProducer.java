@@ -2,7 +2,6 @@ package com.twinape.rsync;
 
 import com.google.inject.Inject;
 import com.twinape.hello.sender.RsyncEventSenderPort;
-import com.twinape.mood.social.rsync.client.RsyncProducer;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import lombok.NonNull;

@@ -9,8 +9,6 @@ import lombok.ToString;
 import lombok.extern.jackson.Jacksonized;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 @Getter
